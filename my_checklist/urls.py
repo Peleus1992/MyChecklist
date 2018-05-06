@@ -17,6 +17,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 urlpatterns = [
-    url('user/', include('checklist_user.urls')),
+    url(r'^user/', include('checklist_user.urls')),
+    url(r'^checklist/', include('checklist_checklist.urls', namespace='checklist')),
     url(r'^admin/', admin.site.urls),
 ]

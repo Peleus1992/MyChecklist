@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'checklist_user.apps.ChecklistUserConfig',
     'checklist_checklist.apps.ChecklistChecklistConfig',
     'django.contrib.admin',
     'django.contrib.auth',

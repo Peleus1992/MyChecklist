@@ -2,22 +2,29 @@
 from __future__ import unicode_literals
 
 from django.test import TestCase, Client
-from django.http import HttpResponse
+from django.shortcuts import reverse
 
 
 class UserTestCase(TestCase):
     def setUp(self):
-        pass
-
-    def test_signup_user(self):
-        client = Client()
-        response = client.post('/user/signup/', {'username': 'derek', 'email': 'derek@mail.com', 'password': 'qweqweqwe'})
-        self.assertEqual(200, response.status_code)
-        self.assertEqual("Success.", response.content)
+        self.client = Client()
+        response = self.client.post(reverse('signup'),
+                               {'username': 'derek', 'email': 'derek@mail.com', 'password': 'qweqweqwe'})
+        self.assertEqual(302, response.status_code)
 
     def test_duplicate_signup_user(self):
-        self.test_signup_user()
-        client = Client()
-        response = client.post('/user/signup/', {'username': 'derek', 'email': 'derek@mail.com', 'password': 'qweqweqwe'})
-        self.assertEqual(200, response.status_code)
-        self.assertEqual("Error: User already exist.", response.content)
+        response = self.client.post(reverse('signup'),
+                                    {'username': 'derek', 'email': 'derek@mail.com', 'password': 'qweqweqwe'})
+        self.assertEqual(400, response.status_code)
+
+    def test_login_user(self):
+        response = self.client.post(reverse('login'), {'username': 'derek', 'password': 'wrongpassword'})
+        self.assertEqual(400, response.status_code)
+        response = self.client.post(reverse('login'), {'username': 'derek', 'password': 'qweqweqwe'})
+        self.assertEqual(302, response.status_code)
+
+    def test_logout_user(self):
+        response = self.client.post(reverse('login'), {'username': 'derek', 'password': 'qweqweqwe'})
+        self.assertEqual(302, response.status_code)
+        response = self.client.post(reverse('logout'))
+        self.assertEqual(302, response.status_code)

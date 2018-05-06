@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+{% if message %}
+<p> {{ message }} </p>
+{% endif %}
+
+<form action="{% url 'signup' %}" method="post">
+{% csrf_token %}
+    Username:<br>
+    <input type="text" name="username"><br>
+    Email:<br>
+    <input type="text" name="email"><br>
+    Password:<br>
+    <input type="text" name="password"><br><br>
+    <input type="submit" value="OK" />
+</form>
+
+<a href="{% url 'login' %}">Login here</a>
+
+</body>
+</html>
