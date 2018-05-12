@@ -8,9 +8,29 @@
 
 {% if user.is_authenticated %}
 <p>Welcome, {{ user.get_username }}. Thanks for logging in.</p>
-<form action="{% url 'logout' %}">
+<form action="{% url 'logout' %}" method="post">
+{% csrf_token %}
     <input type="submit" value="Logout">
 </form>
+
+<ul>
+{% for checklist in checklist_list %}
+    <li>
+        <a href="{% url 'checklist_item' checklist.pk %}">{{ checklist.title }}</a>
+        <form action="{% url 'remove_checklist' checklist.pk %}" method="post">
+        {% csrf_token %}
+            <input type="submit" value="Delete">
+        </form>
+    </li>
+{% endfor %}
+</ul>
+<form action="{% url 'add_checklist' %}" method="post">
+{% csrf_token %}
+    Title:
+    <input type="text" name="title">
+    <input type="submit" value="Add">
+</form>
+
 {% else %}
 <p>Welcome, new user. Please <a href="{% url 'login' %}">log in</a>.</p>
 {% endif %}

@@ -60,7 +60,7 @@ def login_view(request):
 
     response = None
     if status_code == 302:
-        response = redirect(reverse('checklist:checklist'))
+        response = redirect(reverse('checklist'))
     else:
         response = render(request, 'checklist_user/login_page.html', {'message': error_message})
     response.status_code = status_code
